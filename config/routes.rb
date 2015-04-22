@@ -1,13 +1,15 @@
 EXRails::Application.routes.draw do
 
-  devise_for :users, :path => "account", :path_names => { :sign_in => 'login', :sign_out => 'logout', :confirmation => 'verification', :unlock => 'unblock' }
-    as :user do
-      get 'account/password' => 'devise/registrations#edit',   :as => 'edit_user_registration'    
-      put 'account/:id'  => 'devise/registrations#update', :as => 'user_registration'            
-    end
+  mount_devise_token_auth_for 'User', at: 'auth', skip: [:omniauth_callbacks]
+
+  # devise_for :users, :path => "account", :path_names => { :sign_in => 'login', :sign_out => 'logout', :confirmation => 'verification', :unlock => 'unblock' }
+  #   as :user do
+  #     get 'account/password' => 'devise/registrations#edit',   :as => 'edit_user_registration'    
+  #     put 'account/:id'  => 'devise/registrations#update', :as => 'user_registration'            
+  #   end
 
   root to: 'application#init'
-
+  get 'api/tests' => 'api/tests#index'
   get 'reports/:report(/:id)' => 'reports#index'
 
   get 'app/:app'  => 'tpl#index'
